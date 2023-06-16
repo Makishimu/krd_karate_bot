@@ -9,7 +9,9 @@ import {
     gymsList,
     send_contacts_command,
     add_contacts_command,
-    not_understand_command
+    not_understand_command,
+    createSendMasterFunction,
+    createSendGymFunction
 } from './contrllers/commands.js';
 
 // Подключение констант
@@ -19,7 +21,9 @@ import {
     HELP_TRIGGER_WORDS_LIST,
     GYM_LIST_TRIGGER_WORDS_LIST,
     SEND_QUESTION_TRIGGER_WORDS_LIST,
-    DIFFERENT_ACTIONS_BUTTONS
+    DIFFERENT_ACTIONS_BUTTONS,
+    MASTERS_ARRAY,
+    ALL_GYMS_LIST
 } from './config/consts.js';
 // Подключение шагов для сцены
 
@@ -82,12 +86,16 @@ const setupBot = ()=> {
             console.log(`${DIFFERENT_ACTIONS_BUTTONS.addContacts.id} ERROR - `, error.message);
         }
     });
-    // По хорошему, надо тригеры брать из массива PRICE_LIST
-    // bot.action('1_appliances_repair', appliances_repair_command);
-    // bot.action('2_plumber', plumber_command);
-    // bot.action('3_finishing_works', finishing_works_command);
-    // bot.action('4_construction', construction_command);
     bot.action('btn_get_contacts', add_contacts_command);
+    // Добавление тригеров на нажатие кнопок тренеров
+    MASTERS_ARRAY.forEach(async master => {
+        await createSendMasterFunction(bot, master);
+    })
+    // Добавление тригеров на нажатие кнопок залов
+    ALL_GYMS_LIST.forEach(async gym => {
+        await createSendGymFunction(bot, gym);
+    })
+
 
     // Обработка текстовых сообщений
     bot.hears(SEND_CONTACTS_TRIGGER_WORDS_LIST, send_contacts_command);

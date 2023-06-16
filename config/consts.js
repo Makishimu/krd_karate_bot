@@ -67,37 +67,95 @@ const OTHER_TEXT_ANSWER =
     '<b>А так же, команды:</b>\n' +
     BOT_COMMANDS_TEXT;
 
-// Gyms consts
+// Gyms array
 const GYM_OLIMP =  {
     id: 'GYM_OLIMP',
     title: 'Спортивный комплекс Олимп',
     link: 'https://yandex.ru/maps/-/CCU1VBFN~A',
-    address: 'Береговая улица 144'
+    address: 'Береговая улица 144',
+    schedule: {
+        SENSEY: [
+            'ПН, СР, ПТ - с 17:00 до 18:30 Младшая группа',
+            'ПН, СР, ПТ - с 18:30 до 20:00 Средняя группа',
+            'ПН, СР, ПТ - с 20:00 до 21:30 Старшая группа'
+        ],
+        KIRILL_YUKHIMENKO: [
+            'ВТ, ЧТ, СБ - с 17:00 до 18:30 Младшая группа',
+            'ВТ, ЧТ, СБ - с 18:30 до 20:00 Средняя группа',
+            'ВТ, ЧТ, СБ - с 20:00 до 21:30 Старшая группа'
+        ],
+        ZAYNULIN_NIKITA: [
+            'ПН, СР, ПТ - с 12:00 до 13:30 Младшая группа',
+            'ПН, СР, ПТ - с 13:30 до 15:00 Средняя группа',
+            'ПН, СР, ПТ - с 15:00 до 16:30 Старшая группа'
+        ],
+    }
 };
 const GYM_31SCHOOL =  {
     id: 'GYM_31SCHOOL',
     title: 'Школа №31',
     link: 'https://yandex.ru/maps/-/CCU1RGQC2C',
-    address: 'Песчаная улица, 14'
+    address: 'Песчаная улица, 14',
+    schedule: {
+        SENSEY: [
+            'ПН, СР, ПТ - с 17:00 до 18:30 Младшая группа',
+            'ПН, СР, ПТ - с 18:30 до 20:00 Средняя группа',
+            'ПН, СР, ПТ - с 20:00 до 21:30 Старшая группа'
+        ],
+        IVAN_MELNIK: [
+            'ВТ, ЧТ, СБ - с 17:00 до 18:30 Младшая группа',
+            'ВТ, ЧТ, СБ - с 18:30 до 20:00 Средняя группа',
+            'ВТ, ЧТ, СБ - с 20:00 до 21:30 Старшая группа'
+        ],
+    }
 };
 const GYM_32SCHOOL =  {
     id: 'GYM_32SCHOOL',
     title: 'Школа №32',
     link: 'https://yandex.ru/maps/-/CCU1VBu0wD',
-    address: 'улица КИМ, 17'
+    address: 'улица КИМ, 17',
+    schedule: {
+        IVAN_MELNIK: [
+            'ПН, СР, ПТ - с 17:00 до 18:30 Младшая группа',
+            'ПН, СР, ПТ - с 18:30 до 20:00 Средняя группа',
+            'ПН, СР, ПТ - с 20:00 до 21:30 Старшая группа'
+        ],
+        IVAN_IVANOV: [
+            'ВТ, ЧТ, СБ - с 17:00 до 18:30 Младшая группа',
+            'ВТ, ЧТ, СБ - с 18:30 до 20:00 Средняя группа',
+            'ВТ, ЧТ, СБ - с 20:00 до 21:30 Старшая группа'
+        ],
+        ZAYNULIN_NIKITA: [
+            'ПН, СР, ПТ - с 12:00 до 13:30 Младшая группа',
+            'ПН, СР, ПТ - с 13:30 до 15:00 Средняя группа',
+            'ПН, СР, ПТ - с 15:00 до 16:30 Старшая группа'
+        ],
+    }
 };
 const GYM_KOPER =  {
     id: 'GYM_KOPER',
     title: 'Зал на кооперативном рынке',
     link: 'https://yandex.ru/maps/-/CCU1RGcD8D',
-    address: 'улица Гоголя, 80'
+    address: 'улица Гоголя, 80',
+    schedule: {
+        IVAN_IVANOV: [
+            'ПН, СР, ПТ - с 17:00 до 18:30 Младшая группа',
+            'ПН, СР, ПТ - с 18:30 до 20:00 Средняя группа',
+            'ПН, СР, ПТ - с 20:00 до 21:30 Старшая группа'
+        ],
+        KIRILL_YUKHIMENKO: [
+            'ВТ, ЧТ, СБ - с 17:00 до 18:30 Младшая группа',
+            'ВТ, ЧТ, СБ - с 18:30 до 20:00 Средняя группа',
+            'ВТ, ЧТ, СБ - с 20:00 до 21:30 Старшая группа'
+        ],
+    }
 };
 
 // Gyms arrays for trainers
 const ALL_GYMS_LIST = [ GYM_OLIMP, GYM_31SCHOOL, GYM_32SCHOOL, GYM_KOPER ];
 const SENSEY_GYM_LIST = [ GYM_OLIMP, GYM_31SCHOOL ];
 const IVAN_MELNIK_GYM_LIST = [ GYM_32SCHOOL, GYM_31SCHOOL ];
-const KIRILL_MELNIK_GYM_LIST = [ GYM_32SCHOOL, GYM_KOPER ];
+const IVAN_IVANOV_GYM_LIST = [ GYM_32SCHOOL, GYM_KOPER ];
 const KIRILL_YUKHIMENKO_GYM_LIST = [ GYM_KOPER, GYM_OLIMP ];
 const ZAYNULIN_NIKITA_GYM_LIST = [ GYM_OLIMP, GYM_32SCHOOL ];
 
@@ -108,7 +166,7 @@ const MASTERS_ARRAY = [
         phoneName: 'Самвел Александрович сенсей',
         name: 'Самвел Александрович',
         phone: '+7(918)315-37-00',
-        picture: 'https://sun57-2.userapi.com/impg/iVMzcEieKrza52oGIBGaasi2nL_2nBRw-BNVbw/I1lgKwQhuMQ.jpg?size=1242x1197&quality=96&sign=2de3df8a745b4f53c92db89c22b55334&type=album',
+        picture: 'https://karate.ru/media/images/2016/8/2/img-20160521-wa0032.jpg',
         gymsList: SENSEY_GYM_LIST
     },
     {
@@ -117,17 +175,17 @@ const MASTERS_ARRAY = [
         phoneName: 'Мельник Иван сенсей',
         name: 'Мельник Иван',
         phone: '+7(999)999-99-99',
-        picture: 'https://sun9-32.userapi.com/impg/K4qdZqUZC8lTsFFnsJl3Pvniy9lbzMRNmXCtxg/S_IOjgvOue4.jpg?size=828x1100&quality=95&sign=81e284c2b65663320ec800454671e741&type=album',
+        picture: 'https://karate.ru/media/images/2016/8/2/img-20160521-wa0032.jpg',
         gymsList: IVAN_MELNIK_GYM_LIST
     },
     {
         id: 3,
-        innerName: 'KIRILL_MELNIK',
-        phoneName: 'Мельник Кирилл сенсей',
-        name: 'Мельник Кирилл',
+        innerName: 'IVAN_IVANOV',
+        phoneName: 'Иванов Иван сенсей',
+        name: 'Иванов Иван',
         phone: '+7(999)999-99-99',
-        picture: 'https://sun9-77.userapi.com/impg/c853516/v853516077/1d465a/n3QEjZJPPPQ.jpg?size=959x1280&quality=96&sign=5d04c77ad953251f073b4cf9df76ba3a&type=album',
-        gymsList: KIRILL_MELNIK_GYM_LIST
+        picture: 'https://karate.ru/media/images/2016/8/2/img-20160521-wa0032.jpg',
+        gymsList: IVAN_IVANOV_GYM_LIST
     },
     {
         id: 4,
@@ -135,16 +193,16 @@ const MASTERS_ARRAY = [
         phoneName: 'Юхименко Кирилл сенсей',
         name: 'Юхименко Кирилл',
         phone: '+7(999)999-99-99',
-        picture: 'https://sun9-38.userapi.com/impf/c845218/v845218875/23169/0FVavVNILgc.jpg?size=1066x1600&quality=96&sign=c6f83e6babf076130262c7999c1d9be2&type=album',
+        picture: 'https://karate.ru/media/images/2016/8/2/img-20160521-wa0032.jpg',
         gymsList: KIRILL_YUKHIMENKO_GYM_LIST
     },
     {
         id: 5,
         innerName: 'ZAYNULIN_NIKITA',
         phoneName: 'Зайнулин Никита сенсей',
-        name: 'Зайнулин Никита ',
+        name: 'Зайнулин Никита',
         phone: '+7(999)999-99-99',
-        picture: 'https://sun9-7.userapi.com/impf/c628623/v628623406/401a1/gqtLehM43JA.jpg?size=1067x1067&quality=96&sign=3c12eac8d39556b7763985e1f5e573e5&type=album',
+        picture: 'https://karate.ru/media/images/2016/8/2/img-20160521-wa0032.jpg',
         gymsList: ZAYNULIN_NIKITA_GYM_LIST
     },
 ];

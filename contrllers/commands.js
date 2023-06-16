@@ -1,18 +1,18 @@
 import {
     BOT_COMMANDS_TEXT,
-    DIFFERENT_ACTIONS_BUTTONS,
     OTHER_TEXT_ANSWER,
     MASTERS_ARRAY,
     ALL_GYMS_LIST
 } from '../config/consts.js';
 import { Markup } from 'telegraf';
-import { fmt, link, bold } from "telegraf/format";
+import { fmt, bold, italic } from "telegraf/format";
 
 const start = async ctx => {
     try {
         console.log('User started - ', ctx.message.from);
+        // Отправка админу сообщение о начал работы с ботом
         await ctx.telegram.sendMessage(
-            167986013,
+            process?.env?.ADMIN_ID || 167986013,
             `Был старт от полозьвателя:
             id - ${ctx.message.from.id}
             имя - ${ctx.message.from.first_name || 'неизвестно'}
@@ -24,14 +24,10 @@ const start = async ctx => {
             'Это информационный бот, спортивной секции киокушинкай карате в городе Краснодаре.\n\n' +
             '<b>Наш сенсей</b> - ' +
             'Казарян Самвел Александрович, чёрный пояс, 4й дан. Он воспитал огромное количество чемпионов' +
-            ' Росии, Европы, Мира. А так же молодых мастеров которые так же тренируют в этой секции по всему городу.\n\n' +
+            ' России, Европы, Мира. Множество молодых мастеров, его воспитанников, так же тренируют в этой секции по всему городу.\n\n' +
             'Здесь можно узнать всю интересующую Вас информацию.\n\n' +
             '<b>Для работы с ботом, воспользутесь командами из меню:</b>' +
             BOT_COMMANDS_TEXT
-            // '<b>Выберите подходящий вид услуг:</b>',
-            // Markup.inlineKeyboard(PRICE_LIST.map(item => {
-            //     return [Markup.button.callback(item.title, item.id)]
-            // }))
         );
 
     } catch (error) {
@@ -41,93 +37,84 @@ const start = async ctx => {
 
 };
 const help = async ctx => {
-    await ctx.reply(BOT_COMMANDS_TEXT);
+    try {
+        await ctx.reply(BOT_COMMANDS_TEXT);
+    } catch (error) {
+        console.log('ERROR while help - ', error.message);
+    }
+
 };
 
 const gymsList =  async ctx => {
     try {
-        await ALL_GYMS_LIST.forEach(
-             (gym) => {
-                ctx.replyWithHTML(
-                    `<b>${gym.title}</b>\nрасположен по надресу:\n` +
-                    `<i>${gym.address}</i>\n\n` +
-                    `Вы можете открыть местоположение на карте:\n` +
-                    `${gym.link}\n\n`
-                );
-            }
+        await ctx.replyWithHTML(
+            '<b>Выберите тренера, чьи контакты Вы хотите посмотреть:</b>',
+            Markup.inlineKeyboard(ALL_GYMS_LIST.map(gym => {
+                return [Markup.button.callback(`${gym.title}`, gym.id)];
+            }))
         );
-        // await ctx.replyWithHTML(
-        //     `${
-        //         ALL_GYMS_LIST.map(
-        //             gym => {
-        //                 return (
-        //                     `<b>${gym.title}</b>\nрасположен по надресу:\n` +
-        //                     `<i>${gym.address}</i>\n\n` +
-        //                     `Вы можете открыть местоположение на карте:\n` +
-        //                     `${gym.link}\n\n`
-        //                 );
-        //             }
-        //         ).join('')}`
-        // );
     } catch (error) {
         console.log('ERROR inside gymsList - ', error.message);
     }
 
 }
 
-const createReplyFunction = (type) => {
-    return async ctx => {
-        try {
-            await ctx.answerCbQuery();
-            await ctx.replyWithPhoto(
-                { source: FIRST_STEP_PICTURES_MAP[type]},
-                { caption: fmt
-                        `${bold`${PRICE_ANSWER_TITLE_LIST_MAP[type]}.`}
-            \n${link(
-                            '🔗📋Скачайте его, нажав на этот текст👈',
-                            `${'https://google.com'}`
-                        )}\n\nДля получения других ссылок, воспользуйтесь командой  /list
-            `
-                }
-            );
-        } catch (error) {
-            console.error(`Error while ${type} processing - `, error.message);
-        }
-    }
+const createSendMasterFunction = async (bot, master) => {
+    await bot.action(master.innerName,
+        async ctx => {
+            try {
+                await ctx.answerCbQuery();
+                await ctx.replyWithPhoto(
+                    master.picture,
+                    { caption: fmt
+                            `${bold`${master.name}.`}\n\nТелефон: ${master.phone}\n\n${italic('Ведёт занятия в залах:')}\n\n${
+                                master.gymsList.map(gym => { return `${gym.title} - ${gym.address}\n`}).join('')
+                            }\n`
+                    }
+                );
+            } catch (error) {
+                console.error(`Error while MASTER ${master.innerName} processing - `, error.message);
+            }
+        });
 };
 
-// const appliances_repair_command = createReplyFunction('appliances_repair');
-// const plumber_command = createReplyFunction('plumber');
-// const finishing_works_command = createReplyFunction('finishing_works');
-// const construction_command = createReplyFunction('construction');
-const send_contacts_command = async (ctx, hideAddContacts) => {
+const createSendGymFunction = async (bot, gym) => {
+    let trainersNameArr = [];
+    for (let key in gym.schedule) {
+        trainersNameArr.push(MASTERS_ARRAY.find(trainer => trainer.innerName === key));
+    }
+
+    await bot.action(gym.id,
+        async ctx => {
+            try {
+                await ctx.answerCbQuery();
+                await ctx.replyWithHTML(
+                    `<b>${gym.title}</b> - ` +
+                    `<i>${gym.address}</i>\n\n` +
+                    `<b>В зале ведут занятия тренеры:</b>\n\n` +
+                    `${trainersNameArr.map(
+                        trainer =>
+                            `<b>${trainer.name}</b>\n${gym.schedule[trainer.innerName].map(
+                                listItem =>
+                                    `${listItem}\n`
+                            ).join('')}\n\n`).join('')}` +
+                    `Вы можете открыть местоположение на карте:\n` +
+                    `${gym.link}\n\n`
+                );
+            } catch (error) {
+                console.error(`Error while GYM ${gym.id} processing - `, error.message);
+            }
+        });
+};
+
+const send_contacts_command = async (ctx) => {
     try {
-        await ctx.replyWithHTML(
-            `${
-                MASTERS_ARRAY.map(
-                    master => {
-                        return (
-                            `<b>${master.phoneName}</b>\n` + 
-                            `<i>Телефон:</i> <a href="tel:${master.phone}">${master.phone}</a>\n\n` +
-                            `<i>Ведёт занятия в залах:</i>\n${
-                                master.gymsList.map(gym => { return `${gym.title} - ${gym.address}\n`}).join('')
-                            }______________________\n\n`
-                        )}
-                ).join('')
-            }`
-        );
-        if (!hideAddContacts) {
-            await ctx.replyWithHTML('Добавьте наши контакты к себе в записную книгу:',
-                Markup.inlineKeyboard(
-                    [Markup.button.callback(
-                        'Получить контакты',
-                        'btn_get_contacts'
-                    )])
+            await ctx.replyWithHTML(
+                '<b>Выберите тренера, чьи контакты Вы хотите посмотреть:</b>',
+                Markup.inlineKeyboard(MASTERS_ARRAY.map(master => {
+                    return [Markup.button.callback(`${master.name}`, master.innerName)];
+                }))
             );
-        }
-        // await ctx.replyWithHTML('Вернуться к списку стоимости услуг:',
-        //     Markup.inlineKeyboard([Markup.button.callback('Назад', 'btn_back')])
-        // );
     } catch (error) {
         console.error('Error while send_contacts_command processing - ', error.message);
     }
@@ -167,5 +154,7 @@ export {
     gymsList,
     send_contacts_command,
     add_contacts_command,
-    not_understand_command
+    not_understand_command,
+    createSendMasterFunction,
+    createSendGymFunction
 }
