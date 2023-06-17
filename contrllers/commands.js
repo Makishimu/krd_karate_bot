@@ -72,6 +72,12 @@ const createSendTrainerFunction = async (bot, trainer) => {
                             }\n`
                     }
                 );
+                await ctx.replyWithHTML(
+                    '<b>Узнать больше информации о зале и расписании:</b>',
+                    Markup.inlineKeyboard(trainer.gymsList.map(gym => {
+                        return [Markup.button.callback(`${gym.title}`, gym.id)];
+                    }))
+                );
                 await ctx.replyWithContact(`${trainer.phone}`, `${trainer.phoneName}`);
             } catch (error) {
                 console.error(`Error while TRAINER ${trainer.innerName} processing - `, error.message);
