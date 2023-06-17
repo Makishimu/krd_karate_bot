@@ -1,35 +1,22 @@
 const BOT_COMMANDS_TEXT = `
 /start - Начать общение
-/list - Плучить список залов в городе
+/list - Получить список залов в городе
 /contacts - Контакты сенсеев
-/save_contacts - Получить контакты сенсеев для сохранения в телефон
 /send_request - Задать вопрос
 /help - Список команд
 `;
-
-const DIFFERENT_ACTIONS_BUTTONS = {
-    sendContacts: {
-        id: '5_send_contacts',
-        title: 'Контакты'
-    },
-    addContacts: {
-        id: '6_add_contacts',
-        title: 'Сохранить контакты'
-    }
-};
 
 const SEND_CONTACTS_TRIGGER_WORDS_LIST = [
     'Контакты',
     'контакты',
     'Список контактов',
-    'список контактов'
-];
-const ADD_CONTACTS_TRIGGER_WORDS_LIST = [
+    'список контактов',
     'Контакты на телефон',
     'контакты на телефон',
     'Сохранить контакты',
     'сохранить контакты'
 ];
+
 const HELP_TRIGGER_WORDS_LIST = [
     'Список команд',
     'список команд',
@@ -56,8 +43,6 @@ const OTHER_TEXT_ANSWER =
     'Что-что? Не понял. Видимо, это не совсем тот текст, что я ожидаю получить от Вас.\n\n' +
     '<b>Я понимаю только этот текст, для отравки списка контактов:</b>\n' +
     `<i>${SEND_CONTACTS_TRIGGER_WORDS_LIST.join(', ')}</i>.\n\n` +
-    '<b>Я понимаю только этот текст, для сохранения контактов в телефон:</b>\n' +
-    `<i>${ADD_CONTACTS_TRIGGER_WORDS_LIST.join(', ')}</i>.\n\n` +
     '<b>Я понимаю только этот текст, для получения списка команд:</b>\n' +
     `<i>${HELP_TRIGGER_WORDS_LIST.join(', ')}</i>.\n\n` +
     '<b>Я понимаю только этот текст, для получения списка залов:</b>\n' +
@@ -159,7 +144,7 @@ const IVAN_IVANOV_GYM_LIST = [ GYM_32SCHOOL, GYM_KOPER ];
 const KIRILL_YUKHIMENKO_GYM_LIST = [ GYM_KOPER, GYM_OLIMP ];
 const ZAYNULIN_NIKITA_GYM_LIST = [ GYM_OLIMP, GYM_32SCHOOL ];
 
-const MASTERS_ARRAY = [
+const TRAINERS_ARRAY = [
     {
         id: 1,
         innerName: 'SENSEY',
@@ -209,14 +194,12 @@ const MASTERS_ARRAY = [
 
 export {
     BOT_COMMANDS_TEXT,
-    DIFFERENT_ACTIONS_BUTTONS,
     SEND_CONTACTS_TRIGGER_WORDS_LIST,
-    ADD_CONTACTS_TRIGGER_WORDS_LIST,
     HELP_TRIGGER_WORDS_LIST,
     GYM_LIST_TRIGGER_WORDS_LIST,
     SEND_QUESTION_TRIGGER_WORDS_LIST,
     OTHER_TEXT_ANSWER,
-    MASTERS_ARRAY,
+    TRAINERS_ARRAY,
     ALL_GYMS_LIST
 }
 

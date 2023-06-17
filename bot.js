@@ -8,21 +8,18 @@ import {
     help,
     gymsList,
     send_contacts_command,
-    add_contacts_command,
     not_understand_command,
-    createSendMasterFunction,
+    createSendTrainerFunction,
     createSendGymFunction
 } from './contrllers/commands.js';
 
 // Подключение констант
 import {
     SEND_CONTACTS_TRIGGER_WORDS_LIST,
-    ADD_CONTACTS_TRIGGER_WORDS_LIST,
     HELP_TRIGGER_WORDS_LIST,
     GYM_LIST_TRIGGER_WORDS_LIST,
     SEND_QUESTION_TRIGGER_WORDS_LIST,
-    DIFFERENT_ACTIONS_BUTTONS,
-    MASTERS_ARRAY,
+    TRAINERS_ARRAY,
     ALL_GYMS_LIST
 } from './config/consts.js';
 // Подключение шагов для сцены
@@ -55,41 +52,14 @@ const setupBot = ()=> {
     bot.start(start);
     bot.help(help);
     bot.command('contacts',  send_contacts_command);
-    bot.command('save_contacts',  add_contacts_command);
     bot.command('list',  gymsList);
     bot.command('send_request',  async ctx => {
         await ctx.scene.enter('requestConnectionWizard');
     });
 
-    // Обработка нажатия кнопок
-    bot.action('btn_back',  async ctx => {
-       try {
-           await ctx.answerCbQuery();
-           await gymsList(ctx);
-       } catch (error) {
-           console.log('btn_back ERROR - ', error.message);
-       }
-    });
-    bot.action(DIFFERENT_ACTIONS_BUTTONS.sendContacts.id,  async ctx => {
-        try {
-            await ctx.answerCbQuery();
-            await send_contacts_command(ctx);
-        } catch (error) {
-            console.log(`${DIFFERENT_ACTIONS_BUTTONS.sendContacts.id} ERROR - `, error.message);
-        }
-    });
-    bot.action(DIFFERENT_ACTIONS_BUTTONS.addContacts.id,  async ctx => {
-        try {
-            await ctx.answerCbQuery();
-            await add_contacts_command(ctx);
-        } catch (error) {
-            console.log(`${DIFFERENT_ACTIONS_BUTTONS.addContacts.id} ERROR - `, error.message);
-        }
-    });
-    bot.action('btn_get_contacts', add_contacts_command);
     // Добавление тригеров на нажатие кнопок тренеров
-    MASTERS_ARRAY.forEach(async master => {
-        await createSendMasterFunction(bot, master);
+    TRAINERS_ARRAY.forEach(async master => {
+        await createSendTrainerFunction(bot, master);
     })
     // Добавление тригеров на нажатие кнопок залов
     ALL_GYMS_LIST.forEach(async gym => {
@@ -99,7 +69,6 @@ const setupBot = ()=> {
 
     // Обработка текстовых сообщений
     bot.hears(SEND_CONTACTS_TRIGGER_WORDS_LIST, send_contacts_command);
-    bot.hears(ADD_CONTACTS_TRIGGER_WORDS_LIST, add_contacts_command);
     bot.hears(HELP_TRIGGER_WORDS_LIST, help);
     bot.hears(GYM_LIST_TRIGGER_WORDS_LIST, gymsList);
     bot.hears(SEND_QUESTION_TRIGGER_WORDS_LIST, async ctx => {

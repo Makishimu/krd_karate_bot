@@ -1,7 +1,7 @@
 import {
     BOT_COMMANDS_TEXT,
     OTHER_TEXT_ANSWER,
-    MASTERS_ARRAY,
+    TRAINERS_ARRAY,
     ALL_GYMS_LIST
 } from '../config/consts.js';
 import { Markup } from 'telegraf';
@@ -40,7 +40,7 @@ const help = async ctx => {
     try {
         await ctx.reply(BOT_COMMANDS_TEXT);
     } catch (error) {
-        console.log('ERROR while help - ', error.message);
+        console.log('ERROR while /help - ', error.message);
     }
 
 };
@@ -59,21 +59,22 @@ const gymsList =  async ctx => {
 
 }
 
-const createSendMasterFunction = async (bot, master) => {
-    await bot.action(master.innerName,
+const createSendTrainerFunction = async (bot, trainer) => {
+    await bot.action(trainer.innerName,
         async ctx => {
             try {
                 await ctx.answerCbQuery();
                 await ctx.replyWithPhoto(
-                    master.picture,
+                    trainer.picture,
                     { caption: fmt
-                            `${bold`${master.name}.`}\n\nТелефон: ${master.phone}\n\n${italic('Ведёт занятия в залах:')}\n\n${
-                                master.gymsList.map(gym => { return `${gym.title} - ${gym.address}\n`}).join('')
+                            `${bold`${trainer.name}.`}\n\nТелефон: ${trainer.phone}\n\n${italic('Ведёт занятия в залах:')}\n\n${
+                                trainer.gymsList.map(gym => { return `${gym.title} - ${gym.address}\n`}).join('')
                             }\n`
                     }
                 );
+                await ctx.replyWithContact(`${trainer.phone}`, `${trainer.phoneName}`);
             } catch (error) {
-                console.error(`Error while MASTER ${master.innerName} processing - `, error.message);
+                console.error(`Error while TRAINER ${trainer.innerName} processing - `, error.message);
             }
         });
 };
@@ -81,7 +82,7 @@ const createSendMasterFunction = async (bot, master) => {
 const createSendGymFunction = async (bot, gym) => {
     let trainersNameArr = [];
     for (let key in gym.schedule) {
-        trainersNameArr.push(MASTERS_ARRAY.find(trainer => trainer.innerName === key));
+        trainersNameArr.push(TRAINERS_ARRAY.find(trainer => trainer.innerName === key));
     }
 
     await bot.action(gym.id,
@@ -111,32 +112,12 @@ const send_contacts_command = async (ctx) => {
     try {
             await ctx.replyWithHTML(
                 '<b>Выберите тренера, чьи контакты Вы хотите посмотреть:</b>',
-                Markup.inlineKeyboard(MASTERS_ARRAY.map(master => {
+                Markup.inlineKeyboard(TRAINERS_ARRAY.map(master => {
                     return [Markup.button.callback(`${master.name}`, master.innerName)];
                 }))
             );
     } catch (error) {
         console.error('Error while send_contacts_command processing - ', error.message);
-    }
-};
-const add_contacts_command = async ctx => {
-    try {
-        if (ctx && !ctx.message) {
-            await ctx.answerCbQuery();
-        }
-        MASTERS_ARRAY.map(
-            async master => {
-                await ctx.replyWithContact(`${master.phone}`, `${master.phoneName}`);
-            }
-        );
-
-    } catch (error) {
-        await ctx.reply(
-            'Вы слишком часто запрашивали контакты наших мастеров и телеграм перестал их отправлять' +
-            ', пожалуйста, добавьте уже контакты в ручном режиме :)'
-        );
-        await send_contacts_command(ctx, true);
-        console.error('Error while add_contacts_command processing - ', error.message);
     }
 };
 
@@ -153,8 +134,7 @@ export {
     help,
     gymsList,
     send_contacts_command,
-    add_contacts_command,
     not_understand_command,
-    createSendMasterFunction,
+    createSendTrainerFunction,
     createSendGymFunction
 }
