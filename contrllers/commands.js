@@ -9,10 +9,9 @@ import { fmt, bold, italic } from "telegraf/format";
 
 const start = async ctx => {
     try {
-        console.log('User started - ', ctx.message.from);
         // Отправка админу сообщение о начал работы с ботом
         await ctx.telegram.sendMessage(
-            process?.env?.ADMIN_ID || 167986013,
+            process?.env?.ADMIN_ID,
             `Был старт от полозьвателя:
             id - ${ctx.message.from.id}
             имя - ${ctx.message.from.first_name || 'неизвестно'}
@@ -31,8 +30,7 @@ const start = async ctx => {
         );
 
     } catch (error) {
-        await console.log('`При выполнении операции /start возникла ошибка -', error);
-        await ctx.reply(`При выполнении операции /start возникла ошибка - ${error.message}`)
+        await console.error('При выполнении операции /start возникла ошибка - ', error.message);
     }
 
 };
@@ -40,7 +38,7 @@ const help = async ctx => {
     try {
         await ctx.reply(BOT_COMMANDS_TEXT);
     } catch (error) {
-        console.log('ERROR while /help - ', error.message);
+        console.error('ERROR while /help - ', error.message);
     }
 
 };
@@ -54,7 +52,7 @@ const gymsList =  async ctx => {
             }))
         );
     } catch (error) {
-        console.log('ERROR inside gymsList - ', error.message);
+        console.error('ERROR inside gymsList - ', error.message);
     }
 
 }

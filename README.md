@@ -6,7 +6,7 @@ How to start:
 0. This step for you, if you don't have Telegram bot token*
 
 1. Clone the repository.
-2. You need to have .env file with BOT_TOKEN, PORT, NODE_ENV and ADMIN_ID variables.
+2. You need to have .env file with BOT_TOKEN, PORT, NODE_ENV, WEBHOOK_DOMAIN and ADMIN_ID variables.
 3. "npm install".
 4.  Use "npm run dev" while local development, 'nodemon' will refresh your bot.
 4.1  Use "npm run start" for external server.
@@ -16,4 +16,4 @@ How to start:
   0.2 /newbot;
   0.3 Choose a name for your bot;
   0.4 Choose a username for your bot. It must end in `bot`. Like this, for example: Tetris Bot or tetris_bot;
-  0.5 Congrats, afret those steps you have a token (under "Use this token to access the HTTP API:").
+  0.5 Congrats, after those steps you have a token (under "Use this token to access the HTTP API:").
