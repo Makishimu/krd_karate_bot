@@ -65,9 +65,12 @@ const createSendTrainerFunction = async (bot, trainer) => {
                 await ctx.replyWithPhoto(
                     trainer.picture,
                     { caption: fmt
-                            `${bold`${trainer.name}.`}\n\nТелефон: ${trainer.phone}\n\n${italic('Ведёт занятия в залах:')}\n\n${
-                                trainer.gymsList.map(gym => { return `${gym.title} - ${gym.address}\n`}).join('')
-                            }\n`
+                            `${bold`${trainer.name}.`}\n${trainer.mainInfo}
+                            \n${bold('Телефон: ')}${trainer.phone}
+                            \n${italic('Ведёт занятия в залах:')}\n\n${
+                            trainer.gymsList.map(gym => { return `${gym.title} - ${gym.address}\n`
+                            }).join('')
+                            }`
                     }
                 );
                 await ctx.replyWithHTML(
