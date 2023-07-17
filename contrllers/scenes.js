@@ -38,16 +38,15 @@ sendContactsStep.on('text', async ctx => {
     await ctx.replyWithHTML(
         '<b>Благодарю за обращение, тренер обязательно свяжется в Вами.</b>'
     );
-    await ctx.replyWithHTML(
-        '<i>Такое сообщение будет приходить в телеграм тренеру, сразу, как кто-либо отправит запрос:</i>\n\n' +
-        '<b>Внимание, поступил новый вопрос!</b>\n\n' +
-        `<b>Текст обращения:</b>\n${ctx.wizard.state.data.request}.\n\n` +
-        '<u>Контактные данные:</u>\n' +
+    await ctx.telegram.sendMessage(
+        process?.env?.ADMIN_ID,
+        'Внимание, поступил новый вопрос!\n\n' +
+        `Текст обращения:\n${ctx.wizard.state.data.request}.\n\n` +
+        'Контактные данные:\n' +
         `Как обращаться - ${ctx.wizard.state.data.name}.\n` +
         `Телефон - ${ctx.wizard.state.data.number}.\n` +
         `${ctx.wizard.state.data.username ?
-            `Пользователя можно найти в телеграме по нику @${ctx.wizard.state.data.username}` :
-            ''
+            `Пользователя можно найти в телеграме по нику @${ctx.wizard.state.data.username}` : ''
         }`
     );
     return ctx.scene.leave();

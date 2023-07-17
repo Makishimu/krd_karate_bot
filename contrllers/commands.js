@@ -5,7 +5,6 @@ import {
     ALL_GYMS_LIST
 } from '../config/consts.js';
 import { Markup } from 'telegraf';
-import { fmt, bold, italic } from "telegraf/format";
 
 const start = async ctx => {
     try {
@@ -46,7 +45,7 @@ const help = async ctx => {
 const gymsList =  async ctx => {
     try {
         await ctx.replyWithHTML(
-            '<b>Выберите тренера, чьи контакты Вы хотите посмотреть:</b>',
+            '<b>Выберите зал, информацию о котором Вы хотите посмотреть:</b>',
             Markup.inlineKeyboard(ALL_GYMS_LIST.map(gym => {
                 return [Markup.button.callback(`${gym.title}`, gym.id)];
             }))
@@ -62,17 +61,44 @@ const createSendTrainerFunction = async (bot, trainer) => {
         async ctx => {
             try {
                 await ctx.answerCbQuery();
-                await ctx.replyWithPhoto(
-                    trainer.picture,
-                    { caption: fmt
-                            `${bold`${trainer.name}.`}\n${trainer.mainInfo}
-                            \n${bold('Телефон: ')}${trainer.phone}
-                            \n${italic('Ведёт занятия в залах:')}\n\n${
-                            trainer.gymsList.map(gym => { return `${gym.title} - ${gym.address}\n`
-                            }).join('')
-                            }`
-                    }
-                );
+                if (trainer.picturesArr.length === 1) {
+                    await ctx.replyWithPhoto(
+                        trainer.picturesArr[0],
+                        { caption:
+                            `${trainer.name}\n\n` +
+                            `${trainer.mainInfo}\n\n` +
+                            `Телефон: ${trainer.phone}\n\n` +
+                            'Ведёт занятия в залах:\n\n' +
+                            `${trainer.gymsList.map(
+                                gym => { return `${gym.title} - ${gym.address}\n`})
+                                .join('')
+                                }`
+                        }
+                    );
+                } else {
+                    await ctx.replyWithMediaGroup(trainer.picturesArr.map((picture, index) => {
+                        if (index === trainer.picturesArr.length - 1) {
+                            return {
+                                type: 'photo',
+                                media: picture,
+                                caption:
+                                    `${trainer.name}\n\n` +
+                                    `${trainer.mainInfo}\n\n` +
+                                    `Телефон: ${trainer.phone}\n\n` +
+                                    'Ведёт занятия в залах:\n\n' +
+                                    `${trainer.gymsList.map(
+                                        gym => { return `${gym.title} - ${gym.address}\n`})
+                                        .join('')
+                                    }`
+                            };
+                        }
+                        return {
+                            type: 'photo',
+                            media: picture,
+                        };
+                    }));
+                }
+
                 await ctx.replyWithHTML(
                     '<b>Узнать больше информации о зале и расписании:</b>',
                     Markup.inlineKeyboard(trainer.gymsList.map(gym => {
