@@ -8,7 +8,7 @@ You need to have Telegram bot token, go to the `*` if you don't have that one.
 Before you will start, you need to have `.env` file with next variables:
 - NODE_ENV (as `DEV` in development mode and other in external server);
 - BOT_TOKEN (your telegram-bot token);
-- ADMIN_ID (your/admin telegram user id to having messages about bot starting);
+- ADMIN_ID (your/admin telegram user id to having messages about bot starting and get questions from users);
 - PORT (for external server starting, not necessarily for local development/using);
 - WEBHOOK_DOMAIN (for external server starting, not necessarily for local development/using);
 
