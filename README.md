@@ -1,5 +1,5 @@
 # krd_karate_bot
-Telegram-chat-bot for karate team from Krasnodar. Use NodeJs, Telegraf and nodemon while development.
+Telegram-chat-bot for karate team from Krasnodar. Uses NodeJs, Telegraf and nodemon while development.
 
 You need to have Telegram bot token, go to the `*` if you don't have that one.
 
