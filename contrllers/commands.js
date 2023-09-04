@@ -8,6 +8,7 @@ import { Markup } from 'telegraf';
 
 const start = async ctx => {
     try {
+        console.log('START from user - ', ctx.message.from);
         // Отправка админу сообщение о начал работы с ботом
         await ctx.telegram.sendMessage(
             process?.env?.ADMIN_ID,
@@ -15,7 +16,7 @@ const start = async ctx => {
             id - ${ctx.message.from.id}
             имя - ${ctx.message.from.first_name || 'неизвестно'}
             фамилия - ${ctx.message.from.last_name || 'неизвестна'}
-            ник -  ${ctx.message.from.username || 'неизвестен'}`
+            ник -  ${'@' + ctx.message.from.username || 'неизвестен'}`
         );
         await ctx.replyWithHTML(
             `Добрый день, рады Вас видеть ${ctx.message?.from?.first_name || 'в нашем боте'}!\n\n` +
@@ -44,6 +45,7 @@ const help = async ctx => {
 
 const gymsList =  async ctx => {
     try {
+        console.log('GET GYMS LIST from user - ', ctx.message.from);
         await ctx.replyWithHTML(
             '<b>Выберите зал, информацию о котором Вы хотите посмотреть:</b>',
             Markup.inlineKeyboard(ALL_GYMS_LIST.map(gym => {
@@ -143,6 +145,7 @@ const createSendGymFunction = async (bot, gym) => {
 
 const send_contacts_command = async (ctx) => {
     try {
+        console.log('CONTACTS REQUEST from user - ', ctx.message.from);
             await ctx.replyWithHTML(
                 '<b>Выберите тренера, чьи контакты Вы хотите посмотреть:</b>',
                 Markup.inlineKeyboard(TRAINERS_ARRAY.map(master => {
