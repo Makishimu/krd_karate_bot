@@ -12,11 +12,11 @@ const start = async ctx => {
         // Отправка админу сообщение о начал работы с ботом
         await ctx.telegram.sendMessage(
             process?.env?.ADMIN_ID,
-            `Был старт от полозьвателя:
+            `Был старт от пользователя:
             id - ${ctx.message.from.id}
-            имя - ${ctx.message.from.first_name || 'неизвестно'}
-            фамилия - ${ctx.message.from.last_name || 'неизвестна'}
-            ник -  ${'@' + ctx.message.from.username || 'неизвестен'}`
+            ${ctx.message.from.username ? `имя - ${ctx.message.from.first_name}` : 'неизвестно'}
+            ${ctx.message.from.username ? `фамилия - ${ctx.message.from.last_name}` : 'неизвестна'}
+            ${ctx.message.from.username ? `ник - @${ctx.message.from.username}` : 'неизвестен'}`
         );
         await ctx.replyWithHTML(
             `Добрый день, рады Вас видеть ${ctx.message?.from?.first_name || 'в нашем боте'}!\n\n` +
